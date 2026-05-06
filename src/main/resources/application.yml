@@ -1,0 +1,115 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  application:
+    name: vehicle-insurance-management
+
+  # ── Auto-configuration exclusions (Redis not required for local dev) ──────
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vehicle_insurance_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: VehicleInsurancePool
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        debug: false
+
+  # ── Cache: use simple in-memory cache (no Redis dependency) ──────────────
+  cache:
+    type: simple
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+# JWT Configuration — secret must be >= 64 chars for HMAC-SHA512
+jwt:
+  secret: ${JWT_SECRET:VehicleInsurance$ecretKey2024$uperSecureBase64EncodedStringForProductionUse!@#}
+  expiration: 86400000
+  refresh-expiration: 604800000
+
+# Application-specific config
+app:
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:4200
+  rate-limit:
+    requests-per-minute: 60
+  admin:
+    default-email: ${ADMIN_EMAIL:admin@insurance.com}
+    default-password: ${ADMIN_PASSWORD:Admin@123456}
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Springdoc / Swagger
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+  show-actuator: false
+
+# Logging
+logging:
+  level:
+    com.insurance: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/vehicle-insurance.log
+    max-size: 10MB
+    max-history: 30

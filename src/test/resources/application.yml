@@ -1,0 +1,33 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  mail:
+    host: localhost
+    port: 1025
+    username: test
+    password: test
+  cache:
+    type: simple   # Use simple in-memory cache for tests instead of Redis
+
+jwt:
+  secret: TestSecretKeyForTestingPurposesOnlyNotForProductionUse123456
+  expiration: 3600000
+  refresh-expiration: 86400000
+
+app:
+  admin:
+    default-email: admin@test.com
+    default-password: Admin@123456

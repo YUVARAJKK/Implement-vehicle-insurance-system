@@ -1,0 +1,43 @@
+# ── Compiled output ────────────────────────────────────────────────────────────
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# ── Maven wrapper cache ────────────────────────────────────────────────────────
+.mvn/wrapper/maven-wrapper.jar
+
+# ── IDE / Editor ───────────────────────────────────────────────────────────────
+.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+*.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.vscode/
+
+# ── Spring Boot ────────────────────────────────────────────────────────────────
+spring-shell.log
+
+# ── Logs ───────────────────────────────────────────────────────────────────────
+logs/
+*.log
+
+# ── Environment / Secrets — NEVER commit these ─────────────────────────────────
+.env
+.env.*
+application-prod.yml
+application-local.yml
+
+# ── OS files ───────────────────────────────────────────────────────────────────
+Thumbs.db
+ehthumbs.db
+Desktop.ini
