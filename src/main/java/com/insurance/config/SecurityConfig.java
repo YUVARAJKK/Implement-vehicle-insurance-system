@@ -42,6 +42,7 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
     private static final String[] PUBLIC_URLS = {
+        "/",
         "/api/v1/auth/**",
         "/swagger-ui/**",
         "/swagger-ui.html",
