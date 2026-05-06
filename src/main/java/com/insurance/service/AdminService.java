@@ -55,11 +55,10 @@ public class AdminService {
         }
 
         // Policy status breakdown
-        Map<String, Long> policyBreakdown = new EnumMap<>(Policy.PolicyStatus.class) {{
-            for (Policy.PolicyStatus s : Policy.PolicyStatus.values()) {
-                put(s.name(), policyRepository.countByStatus(s));
-            }
-        }};
+        Map<String, Long> policyBreakdown = new LinkedHashMap<>();
+        for (Policy.PolicyStatus s : Policy.PolicyStatus.values()) {
+            policyBreakdown.put(s.name(), policyRepository.countByStatus(s));
+        }
 
         return DashboardResponse.builder()
                 .totalUsers(totalUsers)
