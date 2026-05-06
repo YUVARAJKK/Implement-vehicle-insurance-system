@@ -33,7 +33,7 @@ class PremiumCalculationStrategyTest {
                 .id(1L)
                 .make("Toyota")
                 .model("Corolla")
-                .manufactureYear(2022)
+                .manufactureYear(java.time.LocalDate.now().getYear())
                 .marketValue(new BigDecimal("800000"))
                 .vehicleType(Vehicle.VehicleType.FOUR_WHEELER)
                 .fuelType(Vehicle.FuelType.PETROL)
@@ -78,6 +78,9 @@ class PremiumCalculationStrategyTest {
         ThirdPartyPremiumStrategy thirdParty = new ThirdPartyPremiumStrategy();
         ComprehensivePremiumStrategy comprehensive = new ComprehensivePremiumStrategy();
 
+        // Use a 2-year-old vehicle to avoid the aggressive "new vehicle" discount
+        vehicle.setManufactureYear(java.time.LocalDate.now().getYear() - 2);
+
         plan.setBasePremiumRate(new BigDecimal("0.0400"));
         BigDecimal thirdPartyPremium = thirdParty.calculatePremium(vehicle, plan, user);
         BigDecimal comprehensivePremium = comprehensive.calculatePremium(vehicle, plan, user);
@@ -89,7 +92,7 @@ class PremiumCalculationStrategyTest {
     @DisplayName("ZeroDepreciation: rejects vehicles older than 5 years")
     void zeroDep_oldVehicle_throwsException() {
         vehicle = Vehicle.builder()
-                .manufactureYear(2015)
+                .manufactureYear(java.time.LocalDate.now().getYear() - 6)
                 .marketValue(new BigDecimal("400000"))
                 .vehicleType(Vehicle.VehicleType.FOUR_WHEELER)
                 .build();
