@@ -74,10 +74,12 @@ public class Vehicle extends BaseEntity {
     @Builder.Default
     private boolean active = true;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<Policy> policies = new ArrayList<>();

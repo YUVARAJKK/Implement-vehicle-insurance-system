@@ -46,13 +46,13 @@ public interface PolicyRepository extends JpaRepository<Policy, Long>,
 
     /** Analytics: revenue per month */
     @Query("""
-            SELECT FUNCTION('MONTH', p.createdAt) as month,
+            SELECT EXTRACT(MONTH FROM p.createdAt) as month,
                    SUM(p.premiumAmount) as revenue
             FROM Policy p
             WHERE p.status IN ('ACTIVE','EXPIRED')
-              AND FUNCTION('YEAR', p.createdAt) = :year
-            GROUP BY FUNCTION('MONTH', p.createdAt)
-            ORDER BY FUNCTION('MONTH', p.createdAt)
+              AND EXTRACT(YEAR FROM p.createdAt) = :year
+            GROUP BY EXTRACT(MONTH FROM p.createdAt)
+            ORDER BY EXTRACT(MONTH FROM p.createdAt)
             """)
     List<Object[]> getMonthlyRevenue(@Param("year") int year);
 }
